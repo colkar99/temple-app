@@ -1,63 +1,66 @@
 <%- include('../includes/nav.ejs')%>
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3" style="background-color:lavender;">
-            <div class="text-center">
-                <h3>User Signup</h3>
-            </div>
-            <div class="col-md-12">
-                <% if (errorsMessage) { %>
-                <div class="alert alert-danger">
-                    <strong>Errors!</strong>
-                    <% for(var i =0; i <errorsMessage.length ;i++) { %>
-                    <p>
-                        <%= i + 1%> <%= errorsMessage[i].msg%>
-                    </p>
-                    <% } %>
+<div style="background: currentColor;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3" style="background-color:lavender;">
+                <div class="text-center">
+                    <h3>User Signup</h3>
                 </div>
-                <% } %>
-                <form action="/signup" method="POST" novalidate>
-                    <div class="form-group">
-                        <label for="email">First name:</label>
-                        <input type="text" name="firstName" class="form-control" id="email"
-                            value="<%= oldDatas.firstName %>" required>
+                <div class="col-md-12">
+                    <% if (errorsMessage) { %>
+                    <div class="alert alert-danger">
+                        <strong>Errors!</strong>
+                        <% for(var i =0; i <errorsMessage.length ;i++) { %>
+                        <p>
+                            <%= i + 1%> <%= errorsMessage[i].msg%>
+                        </p>
+                        <% } %>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Last name:</label>
-                        <input type="text" name="lastName" class="form-control" id="email"
-                            value="<%= oldDatas.lastName %>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email address:</label>
-                        <input type="email" name="email" class="form-control" id="email" value="<%= oldDatas.email %>"
-                            required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phoneNumber">Mobile number:</label>
-                        <input type="number" name="phoneNumber" class="form-control" id="phoneNumber" value="<%= oldDatas.phoneNumber %>"
-                            required>
-                    </div>
-                    <div class="form-group">
-                        <label for="pwd">Password:</label>
-                        <input type="password" name="password" class="form-control" id="pwd"
-                            value="<%= oldDatas.password %>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="pwd">confirm Password:</label>
-                        <input type="password" name="confirmPassword" class="form-control"
-                            value="<%= oldDatas.confirmPassword %>" id="pwd" required>
-                    </div>
-                    <input type="hidden" name="_csrf" value="<%= csrfToken%>">
-                    <!-- <div class="checkbox">
-                            <label><input type="checkbox"> Remember me</label>
-                        </div> -->
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-default">Submit</button>
+                    <% } %>
+                    <form action="/signup" method="POST" novalidate>
+                        <div class="form-group">
+                            <label for="email">First name:</label>
+                            <input type="text" name="firstName" class="form-control" id="email"
+                                value="<%= oldDatas.firstName %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Last name:</label>
+                            <input type="text" name="lastName" class="form-control" id="email"
+                                value="<%= oldDatas.lastName %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email address:</label>
+                            <input type="email" name="email" class="form-control" id="email"
+                                value="<%= oldDatas.email %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNumber">Mobile number:</label>
+                            <input type="number" name="phoneNumber" class="form-control" id="phoneNumber"
+                                value="<%= oldDatas.phoneNumber %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pwd">Password:</label>
+                            <input type="password" name="password" class="form-control" id="pwd"
+                                value="<%= oldDatas.password %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pwd">confirm Password:</label>
+                            <input type="password" name="confirmPassword" class="form-control"
+                                value="<%= oldDatas.confirmPassword %>" id="pwd" required>
+                        </div>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken%>">
+                        <!-- <div class="checkbox">
+                                        <label><input type="checkbox"> Remember me</label>
+                                    </div> -->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-default">Submit</button>
 
-                    </div>
-                </form>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<%- include('../includes/footer.ejs')%>

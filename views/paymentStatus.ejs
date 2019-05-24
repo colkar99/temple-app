@@ -1,67 +1,68 @@
 <%- include('includes/nav.ejs')%>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <% if (responseData.paymentStatus == 'TXN_SUCCESS') { %>
-            <div class="alert alert-success">
-                <strong>Success!</strong>We have received your payment successfully.
-            </div>
-            <% } else if(responseData.paymentStatus == 'PENDING') { %>
-            <div class="alert alert-danger">
-                <strong>Pending!</strong>You payment is pending.
-            </div>
-            <% } else { %>
-            <div class="alert alert-danger">
-                <strong>Failed!</strong>Some error occured, Please find below in detail.
-            </div>
-            <% } %>
-        </div>
-    </div>
-    <div class="row" style="background-color:lavender;">
-        <div class="col-md-4 ">
-            <div class="form-group">
-                <label for="orderId">Order Id:</label>
-                <p  id="orderId"><%= responseData.orderId %></p>
+<div style="background: currentColor;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <% if (responseData.paymentStatus == 'TXN_SUCCESS') { %>
+                <div class="alert alert-success">
+                    <strong>Success!</strong>We have received your payment successfully.
+                </div>
+                <% } else if(responseData.paymentStatus == 'PENDING') { %>
+                <div class="alert alert-danger">
+                    <strong>Pending!</strong>You payment is pending.
+                </div>
+                <% } else { %>
+                <div class="alert alert-danger">
+                    <strong>Failed!</strong>Some error occured, Please find below in detail.
+                </div>
+                <% } %>
             </div>
         </div>
-        <div class="col-md-4 ">
-            <div class="form-group">
-                <label for="txnPaymentId">Payment Transaction Id:</label>
-                <p  id="txnPaymentId"><%= responseData.txnPaymentId %></p>
+        <div class="row" style="background-color:lavender;">
+            <div class="col-md-4 ">
+                <div class="form-group">
+                    <label for="orderId">Order Id:</label>
+                    <p id="orderId"><%= responseData.orderId %></p>
+                </div>
             </div>
-        </div>
-        <div class="col-md-4 ">
-            <div class="form-group">
-                <label for="totalAmount">Total Amount:</label>
-                <p  id="totalAmount"><%= responseData.totalAmount %></p>
+            <div class="col-md-4 ">
+                <div class="form-group">
+                    <label for="txnPaymentId">Payment Transaction Id:</label>
+                    <p id="txnPaymentId"><%= responseData.txnPaymentId %></p>
+                </div>
             </div>
-        </div>
-        <div class="col-md-4 ">
-            <div class="form-group">
-                <label for="paymentStatus">Payment Status:</label>
-                <p  id="paymentStatus"><%= responseData.paymentStatus %></p>
+            <div class="col-md-4 ">
+                <div class="form-group">
+                    <label for="totalAmount">Total Amount:</label>
+                    <p id="totalAmount"><%= responseData.totalAmount %></p>
+                </div>
             </div>
-        </div>
-        <div class="col-md-4 ">
-            <div class="form-group">
-                <label for="resMessage">Response message:</label>
-                <p id="resMessage"><%= responseData.resMessage %></p>
+            <div class="col-md-4 ">
+                <div class="form-group">
+                    <label for="paymentStatus">Payment Status:</label>
+                    <p id="paymentStatus"><%= responseData.paymentStatus %></p>
+                </div>
             </div>
-        </div>
-        <div class="col-md-4 ">
-            <div class="form-group">
-                <label for="paymentTxnDate">Transaction date:</label>
-                <p id="paymentTxnDate"><%= responseData.paymentTxnDate %></p>
+            <div class="col-md-4 ">
+                <div class="form-group">
+                    <label for="resMessage">Response message:</label>
+                    <p id="resMessage"><%= responseData.resMessage %></p>
+                </div>
             </div>
-        </div>
-        <div class="col-md-4 ">
-            <div class="form-group">
-                <label for="paymentMode">Payment Mode:</label>
-                <p id="paymentMode"><%= responseData.paymentMode %></p>
+            <div class="col-md-4 ">
+                <div class="form-group">
+                    <label for="paymentTxnDate">Transaction date:</label>
+                    <p id="paymentTxnDate"><%= responseData.paymentTxnDate %></p>
+                </div>
+            </div>
+            <div class="col-md-4 ">
+                <div class="form-group">
+                    <label for="paymentMode">Payment Mode:</label>
+                    <p id="paymentMode"><%= responseData.paymentMode %></p>
+                </div>
             </div>
         </div>
     </div>
 </div>
-</body>
 
-</html>
+<%- include('includes/footer.ejs')%>

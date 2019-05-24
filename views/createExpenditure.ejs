@@ -1,38 +1,39 @@
 <%- include('includes/nav.ejs')%>
+<div style="background: currentColor;">
+    <div class="container">
+        <div class="col-md-12 text-center">
+            <h3 style="color:#fff">Create spend details</h3>
+        </div>
+        <div class="row">
+            <form action="/create-expenditure" method="POST">
+                <div class="col-md-6 form-group">
+                    <label style="color:#fff">Date</label>
+                    <input class="form-control" name="date" type="date">
+                </div>
+                <div class="col-md-6 form-group">
+                    <label style="color:#fff">Cost</label>
+                    <input class="form-control" name="cost" type="number">
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="sel1" style="color:#fff">Spend by:</label>
+                    <select class="form-control" id="sel1" name="spendUser">
+                        <% for(user of users) {%>
+                        <option value="<%= user._id%>"><%= user.firstName%></option>
+                        <% } %>
+                    </select>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label style="color:#fff">Expense details</label>
+                    <textarea class="form-control" name="reason" type="text"></textarea>
+                </div>
 
-<h1>Create expenditure</h1>
-<div class="container">
-    <div class="row">
-        <form action="/create-expenditure" method="POST">
-            <div class="col-md-6 form-group">
-                <label>Date</label>
-                <input class="form-control" name="date" type="date">
-            </div>
-            <div class="col-md-6 form-group">
-                <label>Cost</label>
-                <input class="form-control" name="cost" type="number">
-            </div>
-            <div class="col-md-6 form-group">
-                <label for="sel1">Spend by:</label>
-                <select class="form-control" id="sel1" name="spendUser">
-                    <% for(user of users) {%>
-                    <option value="<%= user._id%>"><%= user.firstName%></option>
-                    <% } %>
-                </select>
-            </div>
-            <div class="col-md-6 form-group">
-                <label>Expense details</label>
-                <textarea class="form-control" name="reason" type="text"></textarea>
-            </div>
 
-
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <div class="text-center">
-                <button type="submit" class="btn btn-success">Submit</button>
-            </div>
-        </form>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-</body>
-
-</html>
+<%- include('includes/footer.ejs')%>
