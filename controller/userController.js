@@ -206,7 +206,7 @@ exports.getPasswordReset = async (req, res, next) => {
     const token = req.query.token;
     const user = await User.findOne({ passwordToken: token });
     if (!user) {
-      return res.render('user/login', {
+        return res.render('user/login', {
             pageTitle: "Log-in",
             path: "/login",
             errorsMessage: [{ msg: "password Token expired ,please try again" }],
@@ -290,6 +290,20 @@ exports.postResetPassword = async (req, res, next) => {
 
 
 
+}
+
+exports.getProfile = async (req, res, next) => {
+    const user = await User.findOne({ email: req.session.user.email })
+        .populate(['transactions', 'orders'])
+console.log(user)
+    res.render('user/profile', {
+        pageTitle: "Profile",
+        csrfToken: req.csrfToken(),
+        path: '/profile',
+        message: null,
+        errorsMessage: null,
+        user: user
+    })
 }
 
 const getMonth = (val) => {

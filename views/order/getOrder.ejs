@@ -1,39 +1,42 @@
 <%- include('../includes/nav.ejs')%>
-
-<div class="container">
-    <h1>Donation makes your workship good</h1>
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3" style="background-color:lavender;">
-            <div class="text-center">
-                <h3>Donation</h3>
-            </div>
-            <div class="col-md-12">
-                <% if (errorsMessage) { %>
-                <div class="alert alert-danger">
-                    <strong>Errors!</strong>
-                    <% for(var i =0; i <errorsMessage.length ;i++) { %>
-                    <p>
-                        <%= i + 1%> <%= errorsMessage[i].msg%>
-                    </p>
-                    <% } %>
+<div style="background: currentColor;">
+    <div class="container">
+        <h1>Donation makes your workship good</h1>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3" style="background-color:lavender;">
+                <div class="text-center">
+                    <h3>Donation</h3>
                 </div>
-                <% } %>
-                <form action="/place-order" method="POST" novalidate>
-                    <div class="form-group">
-                        <label for="orderAmount">Enter your donation amount in Rps</label>
-                        <input type="number" name="orderAmount" class="form-control" id="orderAmount" required>
+                <div class="col-md-12">
+                    <% if (errorsMessage) { %>
+                    <div class="alert alert-danger">
+                        <strong>Errors!</strong>
+                        <% for(var i =0; i <errorsMessage.length ;i++) { %>
+                        <p>
+                            <%= i + 1%> <%= errorsMessage[i].msg%>
+                        </p>
+                        <% } %>
                     </div>
+                    <% } %>
+                    <form action="/place-order" method="POST" novalidate>
+                        <div class="form-group">
+                            <label for="orderAmount">Enter your donation amount in Rps</label>
+                            <input type="number" name="orderAmount" class="form-control" id="orderAmount" required>
+                        </div>
 
-                    <input type="hidden" name="_csrf" value="<%= csrfToken%>">
-                    <!-- <div class="checkbox">
-                                <label><input type="checkbox"> Remember me</label>
-                            </div> -->
-                    <div class="text-center">
-                        <button type="" class="btn btn-success" onclick="donateConfirm()">Donate</button>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken%>">
+                        <!-- <div class="checkbox">
+                                            <label><input type="checkbox"> Remember me</label>
+                                        </div> -->
+                        <div class="text-center">
+                            <button type="" class="btn btn-success">Donate</button>
 
-                    </div>
-                </form>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<%- include('../includes/footer.ejs')%>

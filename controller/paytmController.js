@@ -13,7 +13,7 @@ exports.pgredirect = (req, res, next) => {
     });
 }
 
-exports.response = (req, res, next) => {
+exports.response = async (req, res, next) => {
     responsePayment(req.body).then(
         success => {
             // console.log(`From response success+ = ${success}`);
@@ -67,11 +67,19 @@ exports.response = (req, res, next) => {
                     return expend.save()
                 })
                 .then(data => {
+                    User.findOne({ email: req.session.user.email })
+                        .then(user => {
+                            user.transactions.push(transac);
+                            return user.save()
+                        })
+                        .then(user => {
+                            req.session.lastTrans = transac;
+                            req.session.lastTrans.save((result) => {
+                                res.redirect('/payment-status');
+                            });
+                        })
+                        .catch(err => console.log(err))
 
-                    req.session.lastTrans = transac;
-                    req.session.lastTrans.save((result) => {
-                        res.redirect('/payment-status');
-                    });
                 })
                 .catch(err => console.log(err));
 
@@ -79,6 +87,8 @@ exports.response = (req, res, next) => {
         .catch(err => {
             console.log(err);
         })
+
+
 }
 
 exports.paymentStatus = (req, res, next) => {

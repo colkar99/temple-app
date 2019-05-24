@@ -5,6 +5,7 @@ const { validationResult } = require('express-validator/check');
 const { initPayment } = require("../service/paytm");
 const Transaction = require('../model/transaction');
 const Expenditure = require('../model/expenditure');
+const User = require('../model/user');
 
 exports.getOrder = (req, res, next) => {
     res.render('order/getOrder', {
@@ -18,62 +19,55 @@ exports.getOrder = (req, res, next) => {
     });
 }
 
-exports.postOrder = (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        res.render('order/getOrder', {
-            pageTitle: 'Order',
-            errorsMessage: errors.array(),
-            oldDatas: {
-                orderAmount: req.body.orderAmount
-            },
-            csrfToken: req.csrfToken()
+exports.postOrder = async (req, res, next) => {
 
-        })
-    }
-    // console.log(req.body);
-    if (!req.session.user) {
-        res.render('user/login', {
-            pageTitle: 'Login',
-            csrfToken: req.csrfToken()
 
-        })
-    }
-    const user = req.session.user;
-    const currentDate = new Date();
-    const order = new Order({
-        orderAmount: req.body.orderAmount,
-        userId: req.session.user,
-        orderDate: currentDate.toString('dddd, MMMM ,yyyy')
-    })
-    order.save()
-        .then(order => {
-            // let paramlist = {ORDER_ID: order._id.toString(),CUST_ID: user._id.toString(),
-            //     INDUSTRY_TYPE_ID: config.INDUSTRY_TYPE_ID,CHANNEL_ID: 'WEB',TXN_AMOUNT: "10",MID: config.MID,
-            //     WEBSITE: "WEBSTAGING",PAYTM_MERCHANT_KEY:config.PAYTM_MERCHANT_KEY,CALLBACK_URL: config.CALLBACK_URL};
-            // console.log(paramlist)
-            initPayment(req.body.orderAmount, order._id, user._id).then(
-                success => {
-                    // success.MOBILE_NO = user.phoneNumber;
-                    // success.EMAIL = user.email;
-                    console.log(success);
-
-                    res.render("pgredirect", {
-                        resultData: success,
-                        path: '',
-                        paytmFinalUrl: process.env.PAYTM_FINAL_URL,
-                        csrfToken: req.csrfToken()
-
-                    });
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.render('order/getOrder', {
+                pageTitle: 'Order',
+                errorsMessage: errors.array(),
+                oldDatas: {
+                    orderAmount: req.body.orderAmount
                 },
-                error => {
-                    console.log(error);
-                    res.send(error);
-                }
-            );
+                csrfToken: req.csrfToken()
 
+            })
+        }
+        // console.log(req.body);
+        if (!req.session.user) {
+            res.render('user/login', {
+                pageTitle: 'Login',
+                csrfToken: req.csrfToken()
+
+            })
+        }
+        const user = req.session.user;
+        const currentDate = new Date();
+        const order = new Order({
+            orderAmount: req.body.orderAmount,
+            userId: req.session.user,
+            orderDate: currentDate.toString('dddd, MMMM ,yyyy')
         })
-        .catch(err => console.log(err))
+        const savedOrder = await order.save();
+        const initPayments = await initPayment(req.body.orderAmount, savedOrder._id, user._id);
+        const newUser = await User.findOne({ email: user.email });
+        newUser.orders.push(savedOrder);
+        const savedUser = newUser.save();
+        res.render("pgredirect", {
+            resultData: initPayments,
+            path: '',
+            paytmFinalUrl: process.env.PAYTM_FINAL_URL,
+            csrfToken: req.csrfToken()
+
+        });
+    } catch (errors) {
+        console.log(errors);
+    }
+
+
+
 }
 
 exports.homeTransaction = (req, res, next) => {
@@ -98,7 +92,7 @@ exports.getTransactionHistory = async (req, res, next) => {
     // console.log(startDate == compare);
     try {
         const expends = await Expenditure.find({ expenditureMonth: month, expenditureYear: year })
-            .populate([{path: 'transactions',populate: {path: 'userId'}},'transactions.userId', 'expenditures.spendUser','expenditures.updatedUser'])
+            .populate([{ path: 'transactions', populate: { path: 'userId' } }, 'transactions.userId', 'expenditures.spendUser', 'expenditures.updatedUser'])
         // const transaction = await expends.transactions.find().populate('userId'); 
         // console.log(transaction);   
         // console.log(expends[0].transactions[0]);
