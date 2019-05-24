@@ -1,0 +1,13 @@
+.cus-button {
+    border: none;
+    background: none;
+    color: white;
+    padding: 15px;
+    font-size: 15px;
+}
+.failed{
+    color: red;
+}
+.success{
+    color: green;
+}

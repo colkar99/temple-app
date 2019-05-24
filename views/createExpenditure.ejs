@@ -1,0 +1,38 @@
+<%- include('includes/nav.ejs')%>
+
+<h1>Create expenditure</h1>
+<div class="container">
+    <div class="row">
+        <form action="/create-expenditure" method="POST">
+            <div class="col-md-6 form-group">
+                <label>Date</label>
+                <input class="form-control" name="date" type="date">
+            </div>
+            <div class="col-md-6 form-group">
+                <label>Cost</label>
+                <input class="form-control" name="cost" type="number">
+            </div>
+            <div class="col-md-6 form-group">
+                <label for="sel1">Spend by:</label>
+                <select class="form-control" id="sel1" name="spendUser">
+                    <% for(user of users) {%>
+                    <option value="<%= user._id%>"><%= user.firstName%></option>
+                    <% } %>
+                </select>
+            </div>
+            <div class="col-md-6 form-group">
+                <label>Expense details</label>
+                <textarea class="form-control" name="reason" type="text"></textarea>
+            </div>
+
+
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <div class="text-center">
+                <button type="submit" class="btn btn-success">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+
+</html>

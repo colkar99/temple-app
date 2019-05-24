@@ -1,0 +1,118 @@
+<%- include('../includes/nav.ejs')%>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3" style="background-color:lavender;">
+            <div class="text-center">
+                <h3>User sigin</h3>
+            </div>
+            <% if(passwordReset != null ){ %>
+            <div class="col-md-12" id="password-reset">
+                <div class="alert alert-success">
+                    <p>Password reset link will send to your registered mail id</p>
+                </div>
+            </div>
+            <% } %>
+            <div class="col-md-12">
+                <% if (errorsMessage) { %>
+                <div class="alert alert-danger">
+                    <strong>Errors!</strong>
+                    <% for(var i =0; i <errorsMessage.length ;i++) { %>
+                    <p>
+                        <%= i + 1%> <%= errorsMessage[i].msg%>
+                    </p>
+                    <% } %>
+                </div>
+                <% } %>
+                <form action="/log-in" method="POST">
+                    <div class="form-group">
+                        <label for="email">Email address:</label>
+                        <input type="email" name="email" class="form-control" id="email" value="<%= oldDatas.email%>"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Password:</label>
+                        <input type="password" name="password" class="form-control" id="pwd"
+                            value="<%= oldDatas.password%>" required>
+                    </div>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken%>">
+                    <!-- <div class="checkbox">
+                            <label><input type="checkbox"> Remember me</label>
+                        </div> -->
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-default">Login</button>
+                        <span>
+                            <a data-toggle="modal" data-target="#forgotPasswordModel" style="cursor: pointer;">
+                                Forgot password?
+                            </a>
+                        </span>
+                    </div>
+                    <div class="text-center">
+                        <p>Or</p> <span><a href="/signup">Signup</a></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Forgot password Modal -->
+<div class="modal fade" id="forgotPasswordModel" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Forgot password</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <form action="/forgot-password" method="POST">
+                        <div class="form-group">
+                            <label for="pssEmail">Please enter your registered mail id</label>
+                            <input class="form-control" type="email" name="email" id="pssEmail" required>
+                            <input type="hidden" name="_csrf" value="<%= csrfToken%>" id="_csrf">
+
+                        </div>
+                        <div class="text-center">
+                            <button  type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+
+    // document.getElementById("password-reset").style.display = "none";
+
+    // function passReset() {
+    //     let url = window.location.hostname;
+    // var email = document.getElementById('pssEmail').value;
+    // let csrf = document.getElementById('_csrf').value;
+    // let data = {email: email,_csrf: csrf};
+    // console.log(data)
+
+    //     document.getElementById("password-reset").style.display = "block";
+    //     fetch(`${url}/forgot-password`, {
+    //         method: 'POST',
+    //         body: JSON.stringify(data),
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         }
+    //     }).then(res => res.json())
+    //         .then(response => console.log('Success:', JSON.stringify(response)))
+    //         .catch(error => console.error('Error:', error));
+
+    // }
+</script>
+</body>
+
+</html>
