@@ -11,6 +11,8 @@ const transporter = nodeMailer.createTransport(sendGridTransporter({
         api_key: process.env.API_KEY
     }
 }))
+const fileHelper = require('../util/file')
+const fs = require('fs')
 
 exports.getSignup = (req, res, next) => {
     console.log(req.session.isLoggedin);
@@ -293,17 +295,68 @@ exports.postResetPassword = async (req, res, next) => {
 }
 
 exports.getProfile = async (req, res, next) => {
-    const user = await User.findOne({ email: req.session.user.email })
-        .populate(['transactions', 'orders'])
-console.log(user)
-    res.render('user/profile', {
-        pageTitle: "Profile",
-        csrfToken: req.csrfToken(),
-        path: '/profile',
-        message: null,
-        errorsMessage: null,
-        user: user
-    })
+    try {
+        const user = await User.findOne({ email: req.session.user.email }).populate('transactions');
+        console.log(user)
+        res.render('user/profile', {
+            pageTitle: "Profile",
+            csrfToken: req.csrfToken(),
+            path: '/profile',
+            message: null,
+            errorsMessage: null,
+            user: user
+        })
+    } catch (err) {
+        console.log(err)
+    }
+
+}
+
+exports.editUser = async (req, res, next) => {
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const email = req.body.email;
+    const phoneNumber = req.body.phoneNumber;
+    const image = req.file;
+    const user = await User.findOne({ email: req.session.user.email });
+    let imageUrl;
+    // if (!image) {
+    //     const user = await User.findOne({ email: req.session.user.email })
+    //         .populate(['transactions', 'orders'])
+    //     return res.render('user/profile', {
+    //         pageTitle: "Profile",
+    //         csrfToken: req.csrfToken(),
+    //         path: '/profile',
+    //         message: 'Please upload image or invalid image format!',
+    //         errorsMessage: null,
+    //         user: user
+    //     })
+    // }
+    // console.log(req.file)
+
+
+    if (image != undefined) {
+        if (user.imageUrl != null) {
+            imageUrl = image.path
+            fs.unlink(user.imageUrl,err=>{
+                return
+            })
+            // return fileHelper.deleteFiles(user.imageUrl).then
+        }
+        imageUrl = image.path
+    } else {
+        imageUrl = user.imageUrl
+    }
+
+    console.log(imageUrl)
+    user.firstName = firstName;
+    user.lastName = lastName;
+    user.email = email;
+    user.phoneNumber = phoneNumber;
+    user.imageUrl = imageUrl
+    const savedUser = await user.save();
+    return res.redirect('/profile')
+
 }
 
 const getMonth = (val) => {

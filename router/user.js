@@ -72,5 +72,6 @@ userRouter.post('/reset-password',
             
 
     }), userController.postResetPassword);
-userRouter.get('/profile', isAuth, userController.getProfile)    
+userRouter.get('/profile', isAuth, userController.getProfile)
+userRouter.post('/edit-user',isAuth,userController.editUser)    
 module.exports = userRouter;
