@@ -23,13 +23,16 @@ const userSchema = new Schema({
         required: true
     },
     password: {
-        type: String,
-        required: true
+        type: String
     },
     phoneNumber:{
         type: String,
         default:"",
         // required: true
+    },
+    imageUrl:{
+        type: String,
+        default: null
     },
     orders: [{
         type: Schema.Types.ObjectId,
@@ -37,7 +40,7 @@ const userSchema = new Schema({
     }],
     transactions: [{
         type: Schema.Types.ObjectId,
-        ref: 'Order'
+        ref: 'Transaction'
     }],
     isPasswordReset: {
         type: Boolean,
